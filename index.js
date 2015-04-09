@@ -11,8 +11,6 @@ module.exports = {
             access_token: access_token
         }).exec().then(function(session){
 
-            console.log("and even further", session);
-
             if(!session){
                 throw new Error("Not Authorized: session not found with that access token");
             }
