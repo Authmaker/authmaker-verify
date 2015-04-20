@@ -9,13 +9,9 @@ var oauthSessionSchema = mongoose.Schema({
     redirect_uri: String,
     state: String,
     type: String,
-    userId: String,
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     scopes: [String],
-    expiryDate: Date,
-
-    //deprecated
-    type_id: Number,
-    expiry_date: Date
+    expiryDate: Date
 });
 
 //protect against re-defining

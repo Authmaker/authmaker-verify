@@ -5,7 +5,6 @@ var models = require('./db/models');
 
 module.exports = {
     mongo: function(access_token){
-        console.log("got this far");
 
         return models.oauthSession.findOne({
             access_token: access_token
