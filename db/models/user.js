@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var url = require('url');
 
 var modelName = 'User';
 
@@ -81,14 +80,6 @@ var userSchema = new mongoose.Schema({
 });
 
 userSchema.index({
-    user_id: 1
-});
-
-userSchema.index({
-    mysqlId: 1
-});
-
-userSchema.index({
     username: 1
 });
 
@@ -98,45 +89,6 @@ userSchema.index({
 }, {
     unique: true
 });
-
-userSchema.statics.findFirstRegisteredUserForConfig = function(configId) {
-    return this
-        .find({
-            _config: configId
-        })
-        .sort({
-            createdAt: 1
-        })
-        .limit(1)
-        .exec()
-        .then(function(users) {
-            return users.length > 0 ? users[0] : null;
-        });
-};
-
-
-
-
-userSchema.virtual('cleanUrl').get(function() {
-    return clean_url(this.websiteUrl);
-});
-
-userSchema.path('websiteUrl').set(function(newVal) {
-    //if it changes the clean url
-    if (clean_url(this.websiteUrl) !== clean_url(newVal)) {
-        //nullify the config so they have to re-verify it
-        this._config = null;
-    }
-    return newVal;
-});
-
-//helper functions
-function clean_url(toClean) {
-    if (!toClean) {
-        return;
-    }
-    return url.parse(toClean.toLowerCase(), true).host.replace('www.', '');
-}
 
 //protect against re-defining
 if (mongoose.modelNames().indexOf(modelName) !== -1) {
