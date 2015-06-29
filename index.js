@@ -30,3 +30,8 @@ module.exports = {
         db(nconf);
     }
 };
+
+if(process.env.NODE_ENV === "test"){
+    module.exports.models = models;
+    module.exports.mongoose = require('mongoose');
+}
