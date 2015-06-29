@@ -4,9 +4,9 @@ var modelName = 'AuditTrail';
 
 var auditTrailSchema = mongoose.Schema({
     access_token: String,
-	tag: String,
+    tag: String,
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	date: Date
+    date: Date
 });
 
 //protect against re-defining
