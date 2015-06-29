@@ -6,79 +6,82 @@ var _ = require('lodash');
 var moment = require('moment');
 
 module.exports = {
-    mongo: function(access_token, tag) {
-        return models.oauthSession.findOne({
-                access_token: access_token
-            }).exec().then(function(session) {
-                if (!session) {
-                    throw new Error("Not Authorized: session not found with that access token");
+    mongoRateLimited: function(access_token, tag) {
+        return checkAccessToken(access_token)
+        .then(function(session){
+
+            var scope = _.find(session.scopes, function(scope) {
+                return scope.includes(tag);
+            });
+
+            var scopeParts = scope.split('_');
+            var limit = scopeParts[2];
+            var period = scopeParts[3];
+
+            return models.auditTrail.find({
+                tag: scope,
+                date: {
+                    $gte: moment().subtract(limit, period)
+                }
+            }).count().exec().then(function(count) {
+                if (count > limit) {
+                    throw new Error("Rate limit exceeded");
                 }
 
-                if (!session.expiryDate) {
-                    throw new Error("Not Authorized: invlid session - expriryDate not set");
-                }
-
-                if (moment(session.expiryDate).isBefore()) {
-                    throw new Error("Not Authorized: session has expired");
-                }
-
-                return session;
-            })
-            .then(function(session) {
-                // just return the session if there is no tag
-                if (!tag) {
-                    return session;
-                }
-
-                var audit = new models.auditTrail({
+                return models.auditTrail.create({
                     access_token: access_token,
-                    tag: tag,
+                    tag: scope,
                     userId: session.userId,
                     date: new Date()
-                });
-
-                var isLimited, limit, period;
-                _.forEach(session.scopes, function(scope) {
-                    if (scope.includes(tag)) {
-                        var parts = scope.split('_');
-                        if (parts[1] === "limit") {
-                            isLimited = true;
-                            limit = parts[2];
-                            period = parts[3];
-                        } else {
-                            audit.tag = scope;
-                        }
-                        return false;
-                    }
-                });
-
-                if (!isLimited) {
-                    return audit.save().then(function() {
-                        return session;
-                    });
-                }
-
-                return models.auditTrail.find({
-                    tag: tag,
-                    date: {
-                        $gte: moment().subtract(limit, period)
-                    }
-                }).count().exec().then(function(count) {
-                    if (count > limit) {
-                        throw new Error("Rate limit exceeded");
-                    }
-
-                    return audit.save().then(function() {
-                        return session;
-                    });
+                }).then(function() {
+                    return session;
                 });
             });
+        });
+    },
+    mongo: function(access_token, tag) {
+        return checkAccessToken(access_token)
+        .then(function(session) {
+            // just return the session if there is no tag
+            if (!tag) {
+                return session;
+            }
+
+            return models.auditTrail.create({
+                access_token: access_token,
+                tag: tag,
+                userId: session.userId,
+                date: new Date()
+            }).then(function() {
+                return session;
+            });
+        });
     },
     connectMongo: function(nconf) {
         //initialise the db
         db(nconf);
     }
 };
+
+function checkAccessToken(access_token) {
+    return models.oauthSession.findOne({
+            access_token: access_token
+        }).exec().then(function(session) {
+            if (!session) {
+                throw new Error("Not Authorized: session not found with that access token");
+            }
+
+            if (!session.expiryDate) {
+                throw new Error("Not Authorized: invlid session - expriryDate not set");
+            }
+
+            if (moment(session.expiryDate).isBefore()) {
+                throw new Error("Not Authorized: session has expired");
+            }
+
+            return session;
+        });
+}
 
 if(process.env.NODE_ENV === "test"){
     module.exports.models = models;
