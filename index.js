@@ -30,8 +30,8 @@ module.exports = {
                 throw new Error("Malformed Scope: " + scope + " is not a rate limited scope. e.g. tagname_limit_10_day");
             }
 
-            var limit = scopeParts[2];
-            var period = scopeParts[3];
+            var limit = scopeParts[2].trim();
+            var period = scopeParts[3].trim();
 
             return models.auditTrail.find({
                 tag: tag,
