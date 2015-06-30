@@ -6,7 +6,7 @@ var _ = require('lodash');
 var moment = require('moment');
 
 module.exports = {
-    mongoRateLimited: function(access_token, tag) {
+    mongoRateLimited: function(access_token, tag, defaultScope) {
         if(!tag) {
             throw new Error("Incorrect parameter: Missing tag in arguments passed");
         }
@@ -19,6 +19,10 @@ module.exports = {
                 }
                 return scope.startsWith(tag);
             });
+
+            if(!scope && defaultScope){
+                scope = defaultScope;
+            }
 
             if (!scope) {
                 throw new Error("Not Authorized: No Scope associated with " + tag);
@@ -36,7 +40,7 @@ module.exports = {
             return models.auditTrail.find({
                 tag: tag,
                 date: {
-                    $gte: moment().subtract(limit, period)
+                    $gte: moment().subtract(1, period)
                 }
             }).count().exec().then(function(count) {
                 if (count >= limit) {
