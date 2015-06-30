@@ -39,7 +39,7 @@ module.exports = {
                     $gte: moment().subtract(limit, period)
                 }
             }).count().exec().then(function(count) {
-                if (count > limit) {
+                if (count >= limit) {
                     throw new Error("Too Many Requests: Rate limit exceeded for " + scope);
                 }
 
