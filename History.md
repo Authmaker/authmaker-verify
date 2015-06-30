@@ -1,4 +1,11 @@
 
+1.3.0 / 2015-06-30
+==================
+
+  * Merge pull request #4 from Authmaker/feature/defaultScope
+  * fixing the number of time periods allowed for the auditTrail
+  * allowing the ability for a default scope
+
 1.2.0 / 2015-06-30
 ==================
 
