@@ -7,30 +7,45 @@ var moment = require('moment');
 
 module.exports = {
     mongoRateLimited: function(access_token, tag) {
+        if(!tag) {
+            throw new Error("Incorrect parameter: Missing tag in arguments passed");
+        }
+
         return checkAccessToken(access_token)
         .then(function(session){
-
             var scope = _.find(session.scopes, function(scope) {
-                return scope.includes(tag);
+                if(scope === tag) {
+                    throw new Error("Incorrect parameter: Only tag name required to be passed from " + scope);
+                }
+                return scope.startsWith(tag);
             });
 
+            if (!scope) {
+                throw new Error("Not Authorized: No Scope associated with " + tag);
+            }
+
             var scopeParts = scope.split('_');
+
+            if(scopeParts.length !== 4) {
+                throw new Error("Malformed Scope: " + scope + " is not a rate limited scope. e.g. tagname_limit_10_day");
+            }
+
             var limit = scopeParts[2];
             var period = scopeParts[3];
 
             return models.auditTrail.find({
-                tag: scope,
+                tag: tag,
                 date: {
                     $gte: moment().subtract(limit, period)
                 }
             }).count().exec().then(function(count) {
                 if (count > limit) {
-                    throw new Error("Rate limit exceeded");
+                    throw new Error("Too Many Requests: Rate limit exceeded for " + scope);
                 }
 
                 return models.auditTrail.create({
                     access_token: access_token,
-                    tag: scope,
+                    tag: tag,
                     userId: session.userId,
                     date: new Date()
                 }).then(function() {
@@ -47,9 +62,20 @@ module.exports = {
                 return session;
             }
 
+            var scope = _.find(session.scopes, function(scope) {
+                if(scope === tag) {
+                    throw new Error("Incorrect Tag: Only tag name required to be passed from " + scope);
+                }
+                return scope.startsWith(tag);
+            });
+
+            if (!scope) {
+                throw new Error("Not Authorized: No scope associated with " + tag);
+            }
+
             return models.auditTrail.create({
                 access_token: access_token,
-                tag: tag,
+                tag: scope,
                 userId: session.userId,
                 date: new Date()
             }).then(function() {
