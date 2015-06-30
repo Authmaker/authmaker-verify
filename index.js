@@ -40,7 +40,7 @@ module.exports = {
             return models.auditTrail.find({
                 tag: tag,
                 date: {
-                    $gte: moment().subtract(limit, period)
+                    $gte: moment().subtract(1, period)
                 }
             }).count().exec().then(function(count) {
                 if (count >= limit) {
