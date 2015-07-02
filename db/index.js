@@ -6,7 +6,7 @@ var Q = require('q');
 module.exports = function(nconf) {
     buildConnectionString(nconf, 'mongo:authmaker:').then(function(connectionString) {
 
-        if (mongoose.connection.readyState) {
+        if (!mongoose.connection.readyState) {
             mongoose.connect(connectionString);
         }
 

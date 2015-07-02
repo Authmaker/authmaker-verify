@@ -2,8 +2,16 @@ var moment = require('moment');
 
 var db = require('./db');
 var models = require('./db/models');
+
+var mongoVerify = require('./lib/mongo/verify');
+var checkAccessToken = require('./lib/common/checkAccessToken');
+
 var _ = require('lodash');
 var moment = require('moment');
+
+global.rootRequire = function(fileName) {
+    return require(__dirname + '/' + fileName);
+};
 
 module.exports = {
     mongoRateLimited: function(access_token, tag, defaultScope) {
@@ -58,60 +66,16 @@ module.exports = {
             });
         });
     },
-    mongo: function(access_token, tag) {
-        return checkAccessToken(access_token)
-        .then(function(session) {
-            // just return the session if there is no tag
-            if (!tag) {
-                return session;
-            }
-
-            var scope = _.find(session.scopes, function(scope) {
-                if(scope === tag) {
-                    throw new Error("Incorrect Tag: Only tag name required to be passed from " + scope);
-                }
-                return scope.startsWith(tag);
-            });
-
-            if (!scope) {
-                throw new Error("Not Authorized: No scope associated with " + tag);
-            }
-
-            return models.auditTrail.create({
-                access_token: access_token,
-                tag: scope,
-                userId: session.userId,
-                date: new Date()
-            }).then(function() {
-                return session;
-            });
-        });
-    },
+    mongo: mongoVerify,
     connectMongo: function(nconf) {
         //initialise the db
         db(nconf);
+    },
+
+    rateLimited: function(){
+        //TODO split this out into a non mongo file when we have one
     }
 };
-
-function checkAccessToken(access_token) {
-    return models.oauthSession.findOne({
-            access_token: access_token
-        }).exec().then(function(session) {
-            if (!session) {
-                throw new Error("Not Authorized: session not found with that access token");
-            }
-
-            if (!session.expiryDate) {
-                throw new Error("Not Authorized: invlid session - expriryDate not set");
-            }
-
-            if (moment(session.expiryDate).isBefore()) {
-                throw new Error("Not Authorized: session has expired");
-            }
-
-            return session;
-        });
-}
 
 if(process.env.NODE_ENV === "test"){
     module.exports.models = models;

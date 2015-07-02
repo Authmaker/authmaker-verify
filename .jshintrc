@@ -1,4 +1,7 @@
 {
+    "globals": {
+        "rootRequire": false
+    },
     "node" : true,
     "boss" : true,
     "curly": true,
