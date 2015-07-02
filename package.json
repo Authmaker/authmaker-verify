@@ -9,6 +9,7 @@
   "author": "Chris Manson <chris@bloo.ie>",
   "license": "MIT",
   "dependencies": {
+    "authmaker-common": "^1.0.1",
     "lodash": "^3.9.3",
     "moment": "^2.10.3",
     "mongoose": "^4.0.1",
