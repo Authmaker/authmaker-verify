@@ -3,12 +3,10 @@ var winston = require('winston');
 var util = require('util');
 var Q = require('q');
 
-var isConnecting = false;
-
 module.exports = function(nconf) {
     buildConnectionString(nconf, 'mongo:authmaker:').then(function(connectionString) {
-        if (!isConnecting) {
-            isConnecting = true;
+
+        if (mongoose.connection.readyState) {
             mongoose.connect(connectionString);
         }
 
