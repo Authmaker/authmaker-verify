@@ -1,4 +1,10 @@
 
+1.3.1 / 2015-07-02
+==================
+
+  * Merge pull request #5 from Authmaker/feature/authmakerCommon
+  * implementing authmaker-common and refactoring
+
 1.3.0 / 2015-06-30
 ==================
 
