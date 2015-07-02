@@ -1,4 +1,12 @@
 
+1.3.2 / 2015-07-02
+==================
+
+  * Merge pull request #6 from Authmaker/feature/bugfix
+  * fixing "application wide" rate limiting
+  * fixing strange date behavior because of mongoose coercing a moment object
+  * fixing the requiredScope behavior for non rate limited verify
+
 1.3.1 / 2015-07-02
 ==================
 
