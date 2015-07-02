@@ -42,8 +42,9 @@ module.exports = {
 
             return models.auditTrail.find({
                 tag: tag,
+                userId: session.userId,
                 date: {
-                    $gte: moment().subtract(1, period)
+                    $gt: moment().subtract(1, period).toDate()
                 }
             }).count().exec().then(function(count) {
                 if (count >= limit) {
