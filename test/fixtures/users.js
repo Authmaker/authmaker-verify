@@ -14,6 +14,9 @@ var models = rootRequire('./db/models');
 var sessionsToCreate = [{
     access_token: "valid_access_token_1",
     expiryDate: moment().add(1, 'hours').toDate()
+}, {
+    access_token: 'expired_access_token',
+    expiryDate: moment().subtract(1, 'seconds').toDate()
 }];
 
 function init() {

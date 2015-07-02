@@ -39,6 +39,9 @@ describe("mongo verify functions", function() {
                 .get('/verify')
                 .set('authorization', "Bearer: this_doesnt_really_exist")
                 .expect(401)
+                .expect(function(res){
+                    expect(res).to.have.property('text', 'Not Authorized: session not found with that access token');
+                })
                 .end(done);
         });
         it("should succeed when there is a valid access token", function(done){
@@ -51,7 +54,16 @@ describe("mongo verify functions", function() {
                 })
                 .end(done);
         });
-        it("it should fail if there is a valid, expired access token");
+        it("it should fail if there is a valid, expired access token", function(done){
+            request(global.app)
+                .get('/verify')
+                .set('authorization', "bearer: expired_access_token")
+                .expect(401)
+                .expect(function(res){
+                    expect(res).to.have.property('text', 'Not Authorized: session has expired');
+                })
+                .end(done);
+        });
         it("should fail if the endpoint needs a scope permission but the session doesn't have any");
         it("should fail if the endpoint needs a scope permission but the session has the wrong one");
         it("should succeed if the endpoint needs a scope permission and it is on the session");
