@@ -20,7 +20,7 @@ module.exports = {
                 if(scope === tag) {
                     throw new Error("Incorrect parameter: Only tag name required to be passed from " + scope);
                 }
-                return scope.startsWith(tag);
+                return scope.indexOf(tag) === 0;
             });
 
             if(!scope && defaultScope){
