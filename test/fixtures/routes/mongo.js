@@ -34,7 +34,7 @@ function getSession(req, res, next) {
 module.exports.autoroute = {
     get: {
         '/noverify': success,
-        '/verify': [getSession],
+        '/verify': [getSession, success],
         '/jointrated': [authmakerVerify.mongoRateLimited],
         '/splitrated': [authmakerVerify.mongo, authmakerVerify.rateLimited]
     }
