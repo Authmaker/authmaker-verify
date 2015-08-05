@@ -5,12 +5,11 @@ var authmakerVerify = rootRequire('./index');
 var models = authmakerVerify.models;
 var mongoose = authmakerVerify.mongoose;
 
-// var usersToCreate = [{
-//     _id: mongoose.Types.ObjectId(),
-//     username: 'testuser1@bloo.ie',
-//     clientId: 'testChatsFixture',
-//     date: moment().subtract(1, 'hours').toDate()
-// }];
+var usersToCreate = [{
+    _id: mongoose.Types.ObjectId(),
+    username: 'testuser1@bloo.ie',
+    clientId: 'testChatsFixture'
+}];
 
 var sessionsToCreate = [{
     access_token: "valid_access_token_1",
@@ -40,10 +39,22 @@ var sessionsToCreate = [{
     expiryDate: moment().add(1, 'hours').toDate(),
     scopes: ['face_limit_5_seconds'],
     userId: mongoose.Types.ObjectId()
+}, {
+    access_token: 'valid_rate_limit_5_days_user3_access_token1',
+    expiryDate: moment().add(1, 'hours').toDate(),
+    scopes: ['face_limit_5_seconds'],
+    userId: usersToCreate[0]._id
+}, {
+    access_token: 'valid_rate_limit_5_days_user3_access_token2',
+    expiryDate: moment().add(1, 'hours').toDate(),
+    scopes: ['face_limit_5_seconds'],
+    userId: usersToCreate[0]._id
 }];
 
 function init() {
-    return models.oauthSession.create(sessionsToCreate);
+    return models.oauthSession.create(sessionsToCreate).then(function(){
+        return models.user.create(usersToCreate);
+    });
 }
 
 function reset() {

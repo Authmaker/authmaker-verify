@@ -10,3 +10,5 @@
 #### mongo: function(access_token, requiredScope)
 #### connectMongo: function(nconf)
 #### rateLimited: function()
+#### auditCount: function(access_token, tag, since)
+Use this function to get the count of a particular tag in the audit trail. If you pass the optional `since` parameter it will limit the count to number of audit trail entries since that time. Whatever is passed with the `since` parameter will be passed to `moment(since)` to build a date object directly so you can use any of the [valid parse objects for moment](http://momentjs.com/docs/#/parsing/)
