@@ -17,7 +17,7 @@ describe("mongo verify function", function() {
     });
 
     afterEach(function() {
-        fixture.reset();
+        return fixture.reset();
     });
 
     commonAccessTokenTests(mongoVerify);

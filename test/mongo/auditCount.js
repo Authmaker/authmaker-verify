@@ -29,7 +29,7 @@ describe("mongo auditCount function", function() {
     });
 
     afterEach(function() {
-        fixture.reset();
+        return fixture.reset();
     });
 
     commonAccessTokenTests(mongoAuditCount);

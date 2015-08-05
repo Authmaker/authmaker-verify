@@ -28,7 +28,7 @@ describe("mongo rateLimited function", function() {
     });
 
     afterEach(function() {
-        fixture.reset();
+        return fixture.reset();
     });
 
     commonAccessTokenTests(mongoRateLimited);
