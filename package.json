@@ -4,7 +4,8 @@
   "description": "AccessToken verification for Authmaker",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=test mocha --recursive --reporter spec",
+    "test-watch": "NO_LOG=please npm run test -- -w --reporter min"
   },
   "author": "Chris Manson <chris@bloo.ie>",
   "license": "MIT",
@@ -15,5 +16,9 @@
     "mongoose": "^4.0.1",
     "q": "^1.4.1",
     "winston": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0"
   }
 }
