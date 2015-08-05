@@ -1,6 +1,6 @@
 {
   "name": "authmaker-verify",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "AccessToken verification for Authmaker",
   "main": "index.js",
   "scripts": {
