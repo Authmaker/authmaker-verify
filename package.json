@@ -1,6 +1,6 @@
 {
   "name": "authmaker-verify",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "AccessToken verification for Authmaker",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "Chris Manson <chris@bloo.ie>",
   "license": "MIT",
   "dependencies": {
-    "authmaker-common": "^1.0.1",
+    "authmaker-common": "^1.0.3",
     "lodash": "^3.9.3",
     "moment": "^2.10.3",
     "mongoose": "^4.0.1",
