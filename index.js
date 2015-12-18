@@ -19,11 +19,10 @@ module.exports = {
 
     rateLimited: function(){
         //TODO split this out into a non mongo file when we have one
-    },
-
-    models: models
+    }
 };
 
 if(process.env.NODE_ENV === "test"){
+    module.exports.models = models;
     module.exports.mongoose = require('mongoose');
 }
