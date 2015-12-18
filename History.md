@@ -1,4 +1,12 @@
 
+2.0.0 / 2015-12-18
+==================
+
+  * Merge pull request #8 from Authmaker/feature/getModelUpgrade
+  * upgrading node version for Travis
+  * updating authmaker-common
+  * upgrading authmaker-common and implementing async getModel
+
 1.5.0 / 2015-12-17
 ==================
 
