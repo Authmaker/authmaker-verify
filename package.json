@@ -2,6 +2,7 @@
   "name": "authmaker-verify",
   "version": "1.5.1",
   "description": "AccessToken verification for Authmaker",
+  "repository": "https://github.com/Authmaker/authmaker-verify",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive --reporter spec",
@@ -10,7 +11,7 @@
   "author": "Chris Manson <chris@bloo.ie>",
   "license": "MIT",
   "dependencies": {
-    "authmaker-common": "^1.0.3",
+    "authmaker-common": "^2.0.0",
     "lodash": "^3.9.3",
     "moment": "^2.10.3",
     "mongoose": "^4.0.1",

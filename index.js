@@ -1,7 +1,5 @@
 var authmakerCommon = require('authmaker-common');
 
-var models = authmakerCommon.models;
-
 var mongoAuditCount = require('./lib/mongo/auditCount');
 var mongoRateLimited = require('./lib/mongo/rateLimited');
 var mongoVerify = require('./lib/mongo/verify');
@@ -17,12 +15,10 @@ module.exports = {
         authmakerCommon.init(nconf);
     },
 
-    rateLimited: function(){
+    rateLimited: function() {
         //TODO split this out into a non mongo file when we have one
-    }
-};
+    },
 
-if(process.env.NODE_ENV === "test"){
-    module.exports.models = models;
-    module.exports.mongoose = require('mongoose');
-}
+    getModel: authmakerCommon.getModel,
+    getConnection: authmakerCommon.getConnection
+};
