@@ -1,6 +1,6 @@
 {
   "name": "authmaker-verify",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "description": "AccessToken verification for Authmaker",
   "repository": "https://github.com/Authmaker/authmaker-verify",
   "main": "index.js",
