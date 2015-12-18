@@ -1,9 +1,9 @@
 var moment = require('moment');
 var Q = require('q');
+var mongoose = require('mongoose');
 
 var authmakerVerify = rootRequire('./index');
-var models = authmakerVerify.models;
-var mongoose = authmakerVerify.mongoose;
+var getModel = authmakerVerify.getModel;
 
 var usersToCreate = [{
     _id: mongoose.Types.ObjectId(),
@@ -52,21 +52,28 @@ var sessionsToCreate = [{
 }];
 
 function init() {
-    return models.oauthSession.create(sessionsToCreate).then(function(){
-        return models.user.create(usersToCreate);
+    return getModel('oauthSession').then(function(oauthSession){
+        return oauthSession.create(sessionsToCreate);
+    }).then(function(){
+        return getModel('user').then(function(user){
+            return user.create(usersToCreate);
+        });
     });
 }
 
 function reset() {
     //only allow this in test
     if (process.env.NODE_ENV === 'test') {
-        var collections = mongoose.connection.collections;
+        return authmakerVerify.getConnection().then(function(connection){
+            var collections = connection.collections;
 
-        var promises = Object.keys(collections).map(function(collection) {
-            return Q.ninvoke(collections[collection], 'remove');
+            var promises = Object.keys(collections).map(function(collection) {
+                return Q.ninvoke(collections[collection], 'remove');
+            });
+
+            return Q.all(promises);
         });
 
-        return Q.all(promises);
     } else {
         var errorMessage = 'Excuse me kind sir, but may I enquire as to why you are currently running reset() in a non test environment? I do propose that it is a beastly thing to do and kindly ask you to refrain from this course of action. Sincerely yours, The Computer.';
         console.log(errorMessage);
@@ -78,5 +85,5 @@ function reset() {
 module.exports = {
     init: init,
     reset: reset,
-    models: models
+    getModel: getModel
 };
