@@ -1,0 +1,15 @@
+{
+  "env": {
+    "mocha": true
+  },
+
+  "globals": {
+    "rootRequire": true
+  },
+  
+  "rules": {
+    "prefer-destructuring": 0,
+    "prefer-arrow-callback": 0,
+    "func-names": 0
+  }
+}

@@ -6,13 +6,14 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive --reporter spec",
-    "test-watch": "NO_LOG=please npm run test -- -w --reporter min"
+    "test-watch": "NO_LOG=please npm run test -- -w --reporter min",
+    "coverage": "NO_LOG=please NODE_ENV=test istanbul cover _mocha -- -R spec --recursive"
   },
-  "author": "Chris Manson <chris@bloo.ie>",
+  "author": "Chris Manson <chris@stonecircle.io>",
   "license": "MIT",
   "dependencies": {
-    "authmaker-common": "^2.1.1",
-    "lodash": "^3.9.3",
+    "@authmaker/common": "^1.3.0",
+    "lodash": "^4.17.4",
     "moment": "^2.10.3",
     "mongoose": "^4.0.1",
     "q": "^1.4.1",
@@ -21,7 +22,11 @@
   "devDependencies": {
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
-    "mocha": "^2.2.5",
-    "nconf": "^0.7.2"
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.0.2",
+    "nconf": "^0.9.1"
   }
 }

@@ -1,16 +1,17 @@
-var nconf = require('nconf');
-var authmakerVerify = rootRequire('./index');
+const nconf = require('nconf');
+
+const authmakerVerify = rootRequire('./index');
 
 nconf.defaults({
-    "mongo": {
-        "authmaker": {
-            "db": "authmaker-verify-test",
-            "host": "localhost",
-            "port": 27017
-        }
-    }
+  authmaker: {
+    mongo: {
+      db: 'authmaker-verify-test',
+      host: 'localhost',
+      port: 27017,
+    },
+  },
 });
 
-before(function() {
-    authmakerVerify.connectMongo(nconf);
+before(() => {
+  authmakerVerify.init(nconf);
 });

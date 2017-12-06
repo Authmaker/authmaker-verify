@@ -1,24 +1,26 @@
-var authmakerCommon = require('authmaker-common');
+'use strict';
 
-var mongoAuditCount = require('./lib/mongo/auditCount');
-var mongoRateLimited = require('./lib/mongo/rateLimited');
-var mongoVerify = require('./lib/mongo/verify');
+const common = require('@authmaker/common');
+
+const mongoAuditCount = require('./lib/mongo/auditCount');
+const mongoRateLimited = require('./lib/mongo/rateLimited');
+const mongoVerify = require('./lib/mongo/verify');
 
 
 module.exports = {
-    mongo: mongoVerify,
-    mongoAuditCount: mongoAuditCount,
-    mongoRateLimited: mongoRateLimited,
+  mongo: mongoVerify,
+  mongoAuditCount,
+  mongoRateLimited,
 
-    connectMongo: function(nconf) {
-        //initialise the db
-        authmakerCommon.init(nconf);
-    },
+  init(nconf) {
+    // initialise the db
+    return common.init(nconf);
+  },
 
-    rateLimited: function() {
-        //TODO split this out into a non mongo file when we have one
-    },
+  rateLimited() {
+    // TODO split this out into a non mongo file when we have one
+  },
 
-    getModel: authmakerCommon.getModel,
-    getConnection: authmakerCommon.getConnection
+  getConnection: common.getConnection,
+  models: common.models,
 };
