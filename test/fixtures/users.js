@@ -6,7 +6,7 @@ const authmakerVerify = rootRequire('./index');
 
 const usersToCreate = [{
   _id: mongoose.Types.ObjectId(),
-  username: 'testuser1@bloo.ie',
+  username: 'testuser1@stonecircle.io',
   clientId: 'testChatsFixture',
 }];
 
