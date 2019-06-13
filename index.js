@@ -1,5 +1,3 @@
-'use strict';
-
 const common = require('@authmaker/common');
 
 const mongoAuditCount = require('./lib/mongo/auditCount');

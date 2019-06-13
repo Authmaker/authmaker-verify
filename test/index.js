@@ -1,4 +1,5 @@
 const nconf = require('nconf');
+const common = require('@authmaker/common');
 
 const authmakerVerify = rootRequire('./index');
 
@@ -12,6 +13,10 @@ nconf.defaults({
   },
 });
 
-before(() => {
-  authmakerVerify.init(nconf);
+before(function () {
+  return authmakerVerify.init(nconf);
+});
+
+after(function () {
+  return common.getConnection().then(connection => connection.close());
 });

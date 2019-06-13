@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const moment = require('moment');
 const Q = require('q');
 const mongoose = require('mongoose');
@@ -61,7 +63,7 @@ function reset() {
     return authmakerVerify.getConnection().then((connection) => {
       const collections = connection.collections;
 
-      const promises = Object.keys(collections).map(collection => Q.ninvoke(collections[collection], 'remove'));
+      const promises = Object.keys(collections).map(collection => Q.ninvoke(collections[collection], 'deleteMany'));
 
       return Q.all(promises);
     });
