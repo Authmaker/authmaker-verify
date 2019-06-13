@@ -1,4 +1,20 @@
 
+3.0.1 / 2019-06-13
+==================
+
+  * fix lint, update deps
+  * fixing test user email
+
+3.0.0 / 2017-12-06
+==================
+  * Merge pull request #9 from Authmaker/feature/expose-common-models
+  * stop supporting node 4
+  * updating lodash
+  * fixing tests
+  * trying to fix travis build
+  * bumping @authmaker/common
+  * updating @authmaker/common and exposing models
+
 2.0.0 / 2015-12-18
 ==================
 
